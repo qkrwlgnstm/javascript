@@ -34,12 +34,35 @@
 	const buttonAllNumber = document.querySelector('#all_number_button')
 
 	/* 구구단 출력 되는 로직 */
-	all_number_button.addEventListener('click', gugudanAll)
-	number_button.addEventListener('click', gugudan)
+	all_number_button.addEventListener('click', function() { setGugudan(true)})
+	number_button.addEventListener('click', function() { setGugudan()})
+
+	function setGugudan(isShowAll = false) {
+
+		const numberList = (isShowAll) ? [2, 3, 4, 5, 6, 7, 8, 9] : [parseInt(inputNumber.value)];
+		
+		clearView();
+
+		numberList.forEach( function(number) {
+			calculateTo(number);
+		});
+	}
+
+	function calculateTo(number) {
+		const ul = document.createElement('ul');
+		numberView.appendChild(ul);
+		for (let y = 1; y <= 9; y++){
+			const li = document.createElement('li');
+			ul.appendChild(li);
+			li.innerHTML = number + '*' + y + '=' + number * y;
+		}
+	}
+
 
 	/* 전체 구구단 for문 */
-	function gugudanAll(){
-		numberView.innerHTML = '';
+	function calculateTheWhole(){
+		clearView();
+		
 		for (let x = 2; x <= 9; x++){
 			const ul = document.createElement('ul');
 			numberView.appendChild(ul);
@@ -53,7 +76,7 @@
 
 	/* 인풋 입력값 구구단 */
 	function gugudan() {
-		numberView.innerHTML = '';
+		clearView();
 
 		/* 정수 체크 함수 호출 */
 		isnumberCheck();
@@ -71,6 +94,12 @@
 				li.innerHTML = inputNumber.value + '*' + y + '=' + inputNumber.value * y;
 			}
 		}
+	}
+
+	/* 값을 초기화 함수 */
+	function clearView() {
+		numberView.innerHTML = '';
+		inputNumber.value = '';
 	}
 
 	/* string값 number type으로 변환 정수 체크 하는 로직 */
